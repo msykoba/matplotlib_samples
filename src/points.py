@@ -76,7 +76,7 @@ ellip_y = np.sqrt(lambdas[1])*n_std
 ellip_angle_x = np.degrees(np.arctan(vecs[1,0]/vecs[0,0]))
 ellip_angle_y = np.degrees(np.arctan(vecs[1,1]/vecs[0,1]))
 
-# figure
+# figure1
 plt.figure(figsize=(10,8),tight_layout=True)
 # 1x2, 1st
 plt.subplot(221)
@@ -104,4 +104,34 @@ transf = transforms.Affine2D().rotate_deg(ellip_angle_x).translate(X_mean, Y_mea
 el.set_transform(transf+plt.subplot(224).transData)
 plt.subplot(224).add_patch(el)
 plt.axis("equal")
+
+# figure2(object)
+fig = plt.figure(figsize=(10,8),tight_layout=True)
+# 1x2, 1st
+ax1 = fig.add_subplot(221)
+labels = ["X", "Y"]
+ax1.hist([X,Y],ec="black",bins=30,label=labels,alpha=0.5)
+ax1.legend()
+# 1x2, 2nd
+ax2 = fig.add_subplot(222)
+ax2.hist(X,ec="black",bins=30,label=labels,alpha=0.5)
+ax2.hist(Y,ec="black",bins=30,label=labels,alpha=0.5)
+ax2.legend()
+# 2x2, 3rd
+ax3 = fig.add_subplot(223)
+ax3.scatter(X, Y)
+ax3.plot(X, Y_pred)
+ax3.axis("equal")
+# 2x2, 4th
+ax4 = fig.add_subplot(224)
+ax4.scatter(X,Y)
+ax4.plot(X, Y_pred)
+from matplotlib.patches import Ellipse
+import matplotlib.transforms as transforms
+el = Ellipse(xy=(0,0), width=ellip_x*2, height=ellip_y*2, color="b", alpha=0.3)
+transf = transforms.Affine2D().rotate_deg(ellip_angle_x).translate(X_mean, Y_mean)
+el.set_transform(transf+plt.subplot(224).transData)
+ax4.add_patch(el)
+ax4.axis("equal")
+
 plt.show()
